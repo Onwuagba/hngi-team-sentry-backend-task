@@ -53,6 +53,14 @@ To get the html equivalent of your markdown file, send a GET request to this end
 http://server-url/api/retrieve_page_html?page_title=page-title-here
 ```
 
+### To get markdown
+
+To get the markdown text, send a GET request to this endpoint. The page title must be set.
+
+```yaml
+http://server-url/api/retrieve_page_markdown?page_title=page-title-here
+```
+
 ### To get a list of pages stored with us
 
 Send a GET request to this endpoint to get a list of all the pages you have stored with us;

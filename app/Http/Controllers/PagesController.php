@@ -62,6 +62,25 @@ class PagesController extends Controller
         }
     }
 
+    public function retrieve_page_markdown(Request $request)
+    {
+        $title = $request->input('page_title');
+        try {
+            if ($title) {
+                if (Storage::exists($title . '.md')) {
+                    $markdown = Storage::get($title . '.md');
+                    return response()->json(['html_response' => $markdown]);
+                } else {
+                    return response()->json(['errors' => 'The page you requested for does not exist.'], 404);
+                }
+            } else {
+                return response()->json(['errors' => 'Sorry, the page title is required']);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['errors' => $e]);
+        }
+    }
+
     public function list_pages() {
         $files = array_slice(scandir(storage_path('app/files')), 2);
 
