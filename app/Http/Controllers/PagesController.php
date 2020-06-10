@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Mail\Markdown;
+// use Illuminate\Mail\Markdown;
 use Illuminate\Support\HtmlString;
+use GrahamCampbell\Markdown\Facades\Markdown;
 class PagesController extends Controller
 {
 
@@ -48,8 +49,8 @@ class PagesController extends Controller
             if($title) {
                 if (Storage::exists($title . '.md')) {
                     $markdown = Storage::get($title . '.md');
-                    $html = Markdown::parse($markdown);
-                    return response()->json(['html_response' => $html->toHtml()]);
+                    $html = Markdown::convertToHtml($markdown);
+                    return response()->json(['html_response' => $html]);
                 } else {
                     return response()->json(['errors' => 'The page you requested for does not exist.'], 404);
                 }
