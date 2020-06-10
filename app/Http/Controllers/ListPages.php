@@ -15,11 +15,14 @@ class ListPages extends Controller
      */
     public function __invoke(Request $request)
     {
-        $files = array_filter(Storage::files('/'), function ($fileName) {
-            return '.gitignore' !== $fileName;
-        });
+        try {
+            $files = array_filter(Storage::files('/'), function ($fileName) {
+                return '.gitignore' !== $fileName;
+            });
 
-        return response()->json($files, 200);
+            return response()->json($files, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e], 400);
+        }
     }
-
 }

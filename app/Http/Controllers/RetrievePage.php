@@ -15,16 +15,20 @@ class RetrievePage extends Controller
      */
     public function __invoke(Request $request)
     {
-        $page_name = $request->input('page_name');
+        try {
+            $page_name = $request->input('page_name');
 
-        if ($page_name === NULL) {
-            return response()->json(['error_message' => 'File name not specified'], 400);
-        }
+            if ($page_name === NULL) {
+                return response()->json(['error_message' => 'File name not specified'], 400);
+            }
 
-        if (Storage::exists($page_name)) {
-            return response()->json(['file_content' => Storage::get($page_name)], 200);
-        } else {
-            return response()->json(['error_message' => 'File not found'], 404);
+            if (Storage::exists($page_name)) {
+                return response()->json(['file_content' => Storage::get($page_name)], 200);
+            } else {
+                return response()->json(['error_message' => 'File not found'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e], 400);
         }
     }
 }
