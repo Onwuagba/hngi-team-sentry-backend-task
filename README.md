@@ -1,26 +1,81 @@
-Team-Sentry Backend task with PHP
+# Team -Sentry Backend task with PHP
 
-A dockerized micro-service for managing static, external pages
-	- add_page
-	- retrieve_page_html
-	- set_page_markdown
-	- list_pages
+Welcome to the static page generator API created by the PHP people of team-sentry.
+<br/>This api will enable you create static pages (markdown and html) , store them for you and you can have them anytime.
 
-* ADD PAGE
+All the urls return responses in json format, like so;
 
-To add a page, the url(server/api/add_page) accepts a POST request with two values with key: page_name and file_content.
-If request is successful it returns json object with a response message the telling you that the file was added successfully. Else it returns a json object error code with the apprpriate error message.
+```yaml
+{
+    'message':
+        "response payload here"
+}
+```
 
+## How to use it
 
-* RETRIEVE PAGE 
+The api uses four major endpoints as explained below. <br/>
+All request are sent to;
 
-To retrieve a page, the url(server/api/retrieve_page) accepts a GET request with one value with key: page_name
-If the file exists it returns a json object containing the file content.
+```yaml
+http://server-url/api/
+```
 
-* SET PAGE MARKDOWN
+### To upload a markdowm file
 
-To retrieve a page in markdown format, the uri(server/api/set_page_markdown) accepts  request with one value with key: page_name.
-If the file exists, it returns the contents of the file in markdown format in the body of a json object. Else, it returns the appropriate error code and response message.
+To upload a markdown file, send a POST request to;
 
-* TO LIST PAGES
-To view a list of available pages, a GET request to the uri(server/api/list_pages) returns a json object containing the list of files.
+```yaml
+http://server-url/api/add_page?file=file-here
+```
+
+If you dont have a markdown file we can create one for you by specifying a file titile and it's contents like so;
+
+```yaml
+http://server-url/api/add_page?page_title=page-title-here&page_content=page-content-here
+```
+
+We shall create the file for you and keep for you.
+
+### To write to a file
+
+If you have a file with us already, send a POST request to this endpoint specifying the title and the content you want to write and it shall be done;
+
+```yaml
+http://server-url/api/set_page_markdown?page_title=page-title-here&page_content=page-content-here
+```
+
+### To get html
+
+To get the html equivalent of your markdown file, send a GET request to this endpoint to get your html. The page title must be set.
+
+```yaml
+http://server-url/api/retrieve_page_html?page_title=page-title-here
+```
+
+### To get markdown
+
+To get the markdown text, send a GET request to this endpoint. The page title must be set.
+
+```yaml
+http://server-url/api/retrieve_page_markdown?page_title=page-title-here
+```
+
+### To get a list of pages stored with us
+
+Send a GET request to this endpoint to get a list of all the pages you have stored with us;
+
+```yaml
+http://server-url/api/list_pages
+```
+
+## Errors
+
+If any of the responses are not successful, it means there was problem and it will be indicated in the *errors* key of the json response, like so;
+
+```yaml
+{
+    'errors':
+        "error response here"
+}
+```
